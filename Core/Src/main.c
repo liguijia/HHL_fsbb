@@ -63,7 +63,7 @@ void my_pid_init(void)
 {
     incremental_pid_init(&pid_cap_voltage_h, 0.8f, 0.005f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
     incremental_pid_init(&pid_cap_voltage_l, 0.8f, 0.005f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
-    incremental_pid_init(&pid_power, 0.0003f, 0.0004f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
+    incremental_pid_init(&pid_power, 0.003f, 0.005f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
     incremental_pid_init(&pid_current, 0.001f, 0.00035f, 0, FACTOR_MIN, FACTOR_MAX);
 
     pid_cap_voltage_h.setValue = CAP_VOLTAGE_MAX;
