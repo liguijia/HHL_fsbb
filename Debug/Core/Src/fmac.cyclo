@@ -1,0 +1,3 @@
+../Core/Src/fmac.c:30:6:MX_FMAC_Init	2
+../Core/Src/fmac.c:51:6:HAL_FMAC_MspInit	2
+../Core/Src/fmac.c:67:6:HAL_FMAC_MspDeInit	2

@@ -1,0 +1,3 @@
+../Core/Src/fdcan.c:30:6:MX_FDCAN1_Init	2
+../Core/Src/fdcan.c:68:6:HAL_FDCAN_MspInit	3
+../Core/Src/fdcan.c:114:6:HAL_FDCAN_MspDeInit	2

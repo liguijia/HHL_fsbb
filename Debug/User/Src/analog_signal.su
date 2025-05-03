@@ -1,0 +1,3 @@
+../User/Src/analog_signal.c:79:6:BSP_ADC_Convert_Start	8	static
+../User/Src/analog_signal.c:94:6:HAL_ADC_ConvHalfCpltCallback	16	static
+../User/Src/analog_signal.c:118:6:HAL_ADC_ConvCpltCallback	16	static
