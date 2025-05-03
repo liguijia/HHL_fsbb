@@ -6,5 +6,11 @@ CompileFlags:
         - -Id:\Program Files\Compiler\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\13.3.1\include
         - -Id:\Program Files\Compiler\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\13.3.1\include-fixed
         - -Id:\Program Files\Compiler\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include
+        - -ID:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\c++\13.3.1
+        - -ID:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\c++\13.3.1\arm-none-eabi\thumb\v7e-m+fp\softfp
+        - -ID:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include\c++\13.3.1\backward
+        - -ID:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\13.3.1\include
+        - -ID:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\lib\gcc\arm-none-eabi\13.3.1\include-fixed
+        - -ID:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-none-eabi\include
     CompilationDatabase: ./build/Debug
-    Compiler: d:\Program Files\Compiler\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-g++.exe
+    Compiler: D:\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\arm-gnu-toolchain-13.3.rel1-mingw-w64-i686-arm-none-eabi\bin\arm-none-eabi-g++.exe
