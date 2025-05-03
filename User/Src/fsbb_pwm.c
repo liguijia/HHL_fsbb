@@ -187,9 +187,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         // 2ms定时器用于发送can消息
         can_send();
 
+        //test
+
         // 2ms定时器用于计数CAN断联时间
-        can_recevie_cnt_add();
-        HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
+        // can_recevie_cnt_add();
+        // HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
     } else if (htim->Instance == TIM6) {
         // adc线性映射
         voltage_cap   = get_voltage_cap();
@@ -201,9 +203,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         //test
 
-        DcdcOutputState dcdc_output_state = UpdateDcdcOutputState(can_rx_data.enabled);
+        // DcdcOutputState dcdc_output_state = UpdateDcdcOutputState(can_rx_data.enabled);
 
-        // DcdcOutputState dcdc_output_state = DCDC_OUTPUT_OUTPUT_ENABLED;
+        DcdcOutputState dcdc_output_state = DCDC_OUTPUT_OUTPUT_ENABLED;
 
         //
 
@@ -238,8 +240,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             // pid环路计算
 
             //test
-            pid_power.setValue = (float)can_rx_data.targetChassisPower;
-            // pid_power.setValue = test_target_power;
+            // pid_power.setValue = (float)can_rx_data.targetChassisPower;
+            pid_power.setValue = test_target_power;
 
             if (pid_power.setValue >= TARGET_POWER_MAX) {
                 pid_power.setValue = TARGET_POWER_MAX;
