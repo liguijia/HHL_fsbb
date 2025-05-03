@@ -151,7 +151,7 @@ int main(void)
     {
         // can_send();
         // HAL_Delay(114);
-        HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
+        // HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
