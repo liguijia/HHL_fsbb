@@ -43,13 +43,15 @@
 #include "incremental_pid.h"
 #include "comm.h"
 
-#define FSBB_GENERAL_TO_NARROW_RATIO 0.9f                   // 广义占空比到狭义占空比的比例
-#define FSBB_PERIOD_FULL             (27200U)               // 周期长度全位置
-#define FSBB_PERIOD_HALF             (FSBB_PERIOD_FULL / 2) // 周期长度半位置
-#define FSBB_PERIOD_ZERO             (0U)                   // 周期长度零位置
+#define FSBB_GENERAL_TO_NARROW_RATIO  0.9f                   // 广义占空比到狭义占空比的比例
+#define FSBB_PERIOD_FULL              (27200U)               // 周期长度全位置
+#define FSBB_PERIOD_HALF              (FSBB_PERIOD_FULL / 2) // 周期长度半位置
+#define FSBB_PERIOD_ZERO              (0U)                   // 周期长度零位置
 
-#define TARGET_POWER_MAX             (200.0f) // 补血区底盘功率上限为200W
-#define TARGET_POWER_MIN             (15.0f)  // 一级步兵底盘45W,虚弱状态降到1/3
+#define TARGET_POWER_MAX              (200.0f) // 补血区底盘功率上限为200W
+#define TARGET_POWER_MIN              (15.0f)  // 一级步兵底盘45W,虚弱状态降到1/3
+
+#define MAX_POWERLOSED_DETECTION_TIME (1145U) // 最大掉电检测时间
 
 incremental_pid_t pid_cap_voltage_h;
 incremental_pid_t pid_cap_voltage_l;
@@ -87,7 +89,7 @@ void fsbb_pwm_output_start(void)
 void fsbb_pwm_output_restart(void)
 {
     // 重新开启hrtim的时候要设置软启动
-    float voltage_cap     = get_voltage_cap();
+    float voltage_cap   = get_voltage_cap();
     float voltage_motor = get_voltage_motor();
 
     if (voltage_motor >= 20.0f && voltage_motor <= 28.0f) {
@@ -181,6 +183,27 @@ void fsbb_pwm_set_factor(float scaling_factor)
     }
 }
 
+//
+static uint16_t powerlosed_cnt = 0; // 掉电计数器
+
+void powerlosed_detection(void)
+{
+    if (current_cap <= -0.2f && current_chassis <= 0.2f) {
+        powerlosed_cnt++;
+    } else if (voltage_motor <= 19 || voltage_motor >= 27) {
+        powerlosed_cnt = powerlosed_cnt + 10;
+    } else {
+        // 复位掉电计数器
+        powerlosed_cnt = 0;
+    }
+    if (powerlosed_cnt >= MAX_POWERLOSED_DETECTION_TIME) {
+        // 掉电保护
+        fsbb_pwm_output_stop();
+        HAL_GPIO_WritePin(USR_LED_GPIO_Port, USR_LED_Pin, GPIO_PIN_RESET);
+    } else {
+        //
+    }
+}
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     if (htim->Instance == TIM16) {
@@ -189,24 +212,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
         // 2ms定时器用于计数CAN断联时间
         can_recevie_cnt_add();
+
+        // chassis&cap负向电流时，认为下电
+        powerlosed_detection();
+
         HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
     } else if (htim->Instance == TIM6) {
         // adc线性映射
         voltage_cap   = get_voltage_cap();
         voltage_motor = get_voltage_motor();
 
-        current_cap   = get_current_cap();
+        current_cap     = get_current_cap();
         current_chassis = get_current_chassis();
 
-
-        //test
+        // test
 
         DcdcOutputState dcdc_output_state = UpdateDcdcOutputState(can_rx_data.enabled);
 
         // DcdcOutputState dcdc_output_state = DCDC_OUTPUT_OUTPUT_ENABLED;
 
         //
-
 
         // 如果CAN断联超时了
         if (CAN_DISCONNECT_MAX_COUNT <= can_recevie_cnt_get()) {
@@ -237,8 +262,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
             // pid环路计算
 
-            //test
+            // test
             pid_power.setValue = (float)can_rx_data.targetChassisPower;
+
             // pid_power.setValue = test_target_power;
 
             if (pid_power.setValue >= TARGET_POWER_MAX) {

@@ -198,10 +198,12 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
             if (RxHeader.Identifier == RMCS_ID) {
                 can_recevie_cnt_reset();
                 // 假设消息的前两个字节分别对应targetChassisPower和enabled
+
                 // 正常使用
                 // can_rx_data.targetChassisPower = data[6];
                 // can_rx_data.enabled            = data[7];
-                // 测试
+
+                // test 测试
                 can_rx_data.targetChassisPower = data[4];
                 can_rx_data.enabled            = data[5];
 
