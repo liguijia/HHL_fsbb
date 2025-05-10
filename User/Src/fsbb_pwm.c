@@ -210,6 +210,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         // 2ms定时器用于发送can消息
         can_send();
 
+        // test
+
         // 2ms定时器用于计数CAN断联时间
         can_recevie_cnt_add();
 

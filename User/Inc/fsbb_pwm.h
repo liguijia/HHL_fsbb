@@ -10,7 +10,7 @@ extern "C"
 
     #define DEFAULT_TARGET_POWER (45.0f) // 默认目标功率为45W,这是一级血量优先步兵的功率
     
-    #define CAP_VOLTAGE_MAX      (26.0f) // 电容组最大电压
+    #define CAP_VOLTAGE_MAX      (26.5f) // 电容组最大电压
     #define CAP_VOLTAGE_MIN      (8.0f)  // 电容组最小电压
     #define CAP_CURRENT_MAX      (15.0f) // 电容组最大电流
 
