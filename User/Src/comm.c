@@ -200,12 +200,12 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
                 // 假设消息的前两个字节分别对应targetChassisPower和enabled
 
                 // 正常使用
-                // can_rx_data.targetChassisPower = data[6];
-                // can_rx_data.enabled            = data[7];
+                can_rx_data.targetChassisPower = data[6];
+                can_rx_data.enabled            = data[7];
 
                 // test 测试
-                can_rx_data.targetChassisPower = data[4];
-                can_rx_data.enabled            = data[5];
+                // can_rx_data.targetChassisPower = data[4];
+                // can_rx_data.enabled            = data[5];
 
                 // 可以在这里添加更多的处理逻辑
                 // HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
