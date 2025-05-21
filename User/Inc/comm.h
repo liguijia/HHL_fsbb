@@ -7,8 +7,8 @@
 
 #define RMCS_ID     (0x1FE)
 #define LEGGED_ID   (0x427)
-// #define SUPERCAP_ID (0x300)
-#define SUPERCAP_ID              (0x209)//test
+#define SUPERCAP_ID (0x300)
+// #define SUPERCAP_ID              (0x209)//test
 #define CAN_DISCONNECT_MAX_COUNT (500)
 
 typedef enum {

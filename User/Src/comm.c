@@ -2,6 +2,7 @@
 #include "fdcan.h"
 #include "analog_signal.h"
 #include "gpio.h"
+#include <stdint.h>
 
 #define my_hfdcan hfdcan1
 
@@ -139,11 +140,14 @@ void can_send(void)
 
     // 获取数据
     float chassis_power_temp    = 0.0f;
+    float motor_power_temp      = 0.0f;
+    float supercap_power_temp   = 0.0f;
     float supercap_voltage_temp = 0.0f;
+    float supercap_current_temp = 0.0f;
     float chassis_voltage_temp  = 0.0f;
     float chassis_current_temp  = 0.0f;
 
-    uint16_t chassis_power;
+    uint16_t motor_power;
     uint16_t supercap_voltage;
     uint16_t chassis_voltage;
 
@@ -153,10 +157,12 @@ void can_send(void)
     supercap_voltage_temp = get_voltage_cap();
     chassis_voltage_temp  = get_voltage_motor();
     chassis_current_temp  = get_current_chassis();
+    supercap_current_temp = get_current_cap();
     chassis_power_temp    = chassis_voltage_temp * chassis_current_temp;
-
+    supercap_power_temp   = supercap_voltage_temp * supercap_current_temp;
+    motor_power_temp      = chassis_power_temp - supercap_power_temp;
     // 将数据转换为uint16_t类型
-    chassis_power    = float2uint16_t(chassis_power_temp, 0.0f, 500.0f, 16);
+    motor_power      = float2uint16_t(motor_power_temp, -100.0f, 400.0f, 16);
     supercap_voltage = float2uint16_t(supercap_voltage_temp, 0.0f, 50.0f, 16);
     chassis_voltage  = float2uint16_t(chassis_voltage_temp, 0.0f, 50.0f, 16);
 
@@ -168,8 +174,8 @@ void can_send(void)
     }
 
     // 将txData结构体中的数据转换为字节数组
-    data[1] = (uint8_t)(chassis_power >> 8);      // 高字节
-    data[0] = (uint8_t)(chassis_power & 0xFF);    // 低字节
+    data[1] = (uint8_t)(motor_power >> 8);        // 高字节
+    data[0] = (uint8_t)(motor_power & 0xFF);      // 低字节
     data[3] = (uint8_t)(supercap_voltage >> 8);   // 高字节
     data[2] = (uint8_t)(supercap_voltage & 0xFF); // 低字节
     data[5] = (uint8_t)(chassis_voltage >> 8);    // 高字节
@@ -200,12 +206,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
                 // 假设消息的前两个字节分别对应targetChassisPower和enabled
 
                 // 正常使用
-                // can_rx_data.targetChassisPower = data[6];
-                // can_rx_data.enabled            = data[7];
-
-                // test 测试
-                can_rx_data.targetChassisPower = data[4];
-                can_rx_data.enabled            = data[5];
+                can_rx_data.targetChassisPower = data[6];
+                can_rx_data.enabled            = data[7];
 
                 // 可以在这里添加更多的处理逻辑
                 // HAL_GPIO_TogglePin(USR_LED_GPIO_Port, USR_LED_Pin);
