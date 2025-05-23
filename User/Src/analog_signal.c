@@ -59,10 +59,10 @@ static board_adc_calibration_t adc_cali_array[] = {
     // board_adc_calibration insert start
     {
         {0x00000000, 0x00000000, 0x00000222},
-        {0.00055714557726337598f, 0.02004745127709993760f},
-        {0.00037920382197721106f, -12.15420318075795158563f},
-        {0.00055733053745626448f, 0.03231219020076465248f},
-        {0.00046809643250407464f, -15.13832314397009781715f},
+        {0.00054288592797400721f, 0.08527825178208922607f},
+        {0.00051266358776884955f, -16.76402841264739862481f},
+        {0.00054900824137531234f, 0.01831074563559072568f},
+        {0.00050084876771404471f, -16.41742091815762449869f},
     },
     {
         {0x00000000, 0x00000000, 0x00000111},
@@ -91,6 +91,11 @@ static mean_filter_t v_motor_filter = {0};
 // static mean_filter_t i_motor_filter   = {0};
 static mean_filter_t i_chassis_filter = {0};
 
+uint16_t test_voltage_chassis;
+uint16_t test_voltage_cap;
+uint16_t test_current_chassis;
+uint16_t test_current_cap;
+
 // 线性映射,用于将ADC采样值映射到实际值
 static inline float linear_map(float value, adc_calibration_t calibration)
 {
@@ -100,6 +105,7 @@ static inline float linear_map(float value, adc_calibration_t calibration)
 float get_voltage_motor()
 {
     uint16_t adc_value_average = mean_filter_calculate_average(&v_motor_filter);
+    test_voltage_chassis = adc_value_average;
     float mapped_value         = linear_map(adc_value_average, adc_cali_array[0].v_motor);
     return mapped_value;
 }
@@ -107,6 +113,7 @@ float get_voltage_motor()
 float get_voltage_cap()
 {
     uint16_t adc_value_average = mean_filter_calculate_average(&v_cap_filter);
+    test_voltage_cap = adc_value_average;
     float mapped_value         = linear_map(adc_value_average, adc_cali_array[0].v_cap);
     return mapped_value;
 }
@@ -114,6 +121,7 @@ float get_voltage_cap()
 float get_current_chassis()
 {
     uint16_t adc_value_average = mean_filter_calculate_average(&i_chassis_filter);
+    test_current_chassis = adc_value_average;
     float mapped_value         = linear_map(adc_value_average, adc_cali_array[0].i_chassis);
     return mapped_value;
 }
@@ -128,6 +136,7 @@ float get_current_chassis()
 float get_current_cap()
 {
     uint16_t adc_value_average = mean_filter_calculate_average(&i_cap_filter);
+    test_current_cap = adc_value_average;
     float mapped_value         = linear_map(adc_value_average, adc_cali_array[0].i_cap);
     return mapped_value;
 }

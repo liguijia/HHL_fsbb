@@ -61,7 +61,7 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 void my_pid_init(void)
 {
-    incremental_pid_init(&pid_cap_voltage_h, 0.85f, 0.006f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
+    incremental_pid_init(&pid_cap_voltage_h, 0.85f, 0.008f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
     incremental_pid_init(&pid_cap_voltage_l, 0.7f, 0.015f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
     incremental_pid_init(&pid_power, 0.0009f, 0.00075f, 0, -CAP_CURRENT_MAX, CAP_CURRENT_MAX);
     incremental_pid_init(&pid_current, 0.001f, 0.00045f, 0, FACTOR_MIN, FACTOR_MAX);

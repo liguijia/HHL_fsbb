@@ -293,6 +293,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
             general_duty         = incremental_pid_compute(&pid_current, current_cap);
             // pwm输出
             fsbb_pwm_set_factor(general_duty);
+            // fsbb_pwm_set_factor(0.5f);
         } else {
             // Do nothing
         }
